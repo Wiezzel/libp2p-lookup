@@ -397,6 +397,7 @@ arg_enum! {
         Polkadot,
         Ipfs,
         Ursa,
+        Subsquid,
     }
 }
 
@@ -442,6 +443,12 @@ impl Network {
                     ("/dns/bootstrap-node-0.ursa.earth/tcp/6009".parse().unwrap(), FromStr::from_str("12D3KooWDji7xMLia6GAsyr4oiEFD2dd3zSryqNhfxU3Grzs1r9p").unwrap()),
                 ]
             }
+            Network::Subsquid => {
+                vec![
+                    ("/dns4/testnet.subsquid.io/tcp/22345".parse().unwrap(), FromStr::from_str("12D3KooWSRvKpvNbsrGbLXGFZV7GYdcrYNh4W2nipwHHMYikzV58").unwrap()),
+                    ("/dns4/testnet.subsquid.io/tcp/22346".parse().unwrap(), FromStr::from_str("12D3KooWQER7HEpwsvqSzqzaiV36d3Bn6DZrnwEunnzS76pgZkMU").unwrap()),
+                ]
+            }
         }
     }
 
@@ -451,6 +458,7 @@ impl Network {
             Network::Polkadot => Some("/dot/kad".to_string()),
             Network::Ipfs => None,
             Network::Ursa => Some("/ursa/kad/0.0.1".to_string()),
+            Network::Subsquid => None,
         }
     }
 }
