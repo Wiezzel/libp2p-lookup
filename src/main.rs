@@ -445,8 +445,8 @@ impl Network {
             }
             Network::Subsquid => {
                 vec![
-                    ("/dns4/testnet.subsquid.io/tcp/22345".parse().unwrap(), FromStr::from_str("12D3KooWSRvKpvNbsrGbLXGFZV7GYdcrYNh4W2nipwHHMYikzV58").unwrap()),
-                    ("/dns4/testnet.subsquid.io/tcp/22346".parse().unwrap(), FromStr::from_str("12D3KooWQER7HEpwsvqSzqzaiV36d3Bn6DZrnwEunnzS76pgZkMU").unwrap()),
+                    ("/dns4/testnet.subsquid.io/udp/22445/quic-v1".parse().unwrap(), FromStr::from_str("12D3KooWSRvKpvNbsrGbLXGFZV7GYdcrYNh4W2nipwHHMYikzV58").unwrap()),
+                    ("/dns4/testnet.subsquid.io/udp/22446/quic-v1".parse().unwrap(), FromStr::from_str("12D3KooWQER7HEpwsvqSzqzaiV36d3Bn6DZrnwEunnzS76pgZkMU").unwrap()),
                 ]
             }
         }
