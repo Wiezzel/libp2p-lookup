@@ -128,8 +128,10 @@ impl std::fmt::Display for Peer {
 
 impl LookupClient {
     fn new(network: Option<Network>) -> Self {
-        // Create a random key for ourselves.
-        let local_key = Keypair::generate_ed25519();
+        // Load key
+        let key_path = std::env::var("KEY_PATH").expect("KEY_PATH not provided");
+        let mut key_bytes = std::fs::read(key_path).expect("Invalid key file");
+        let local_key: Keypair = libp2p::identity::ed25519::Keypair::try_from_bytes(key_bytes.as_mut_slice()).expect("Invalid key file").into();
         let local_peer_id = PeerId::from(local_key.public());
 
         println!("Local peer id: {local_peer_id}");
@@ -397,7 +399,8 @@ arg_enum! {
         Polkadot,
         Ipfs,
         Ursa,
-        Subsquid,
+        SubsquidTethys,
+        SubsquidMainnet,
     }
 }
 
@@ -443,10 +446,16 @@ impl Network {
                     ("/dns/bootstrap-node-0.ursa.earth/tcp/6009".parse().unwrap(), FromStr::from_str("12D3KooWDji7xMLia6GAsyr4oiEFD2dd3zSryqNhfxU3Grzs1r9p").unwrap()),
                 ]
             }
-            Network::Subsquid => {
+            Network::SubsquidTethys => {
                 vec![
                     ("/dns4/testnet.subsquid.io/udp/22445/quic-v1".parse().unwrap(), FromStr::from_str("12D3KooWSRvKpvNbsrGbLXGFZV7GYdcrYNh4W2nipwHHMYikzV58").unwrap()),
-                    ("/dns4/testnet.subsquid.io/udp/22446/quic-v1".parse().unwrap(), FromStr::from_str("12D3KooWQER7HEpwsvqSzqzaiV36d3Bn6DZrnwEunnzS76pgZkMU").unwrap()),
+                    ("/dns4/testnet.subsquid.io/udp/22446/quic-v1".parse().unwrap(), FromStr::from_str("12D3KooWQC9tPzj2ShLn39RFHS5SGbvbP2pEd7bJ61kSW2LwxGSB").unwrap()),
+                ]
+            }
+            Network::SubsquidMainnet => {
+                vec![
+                    ("/dns4/mainnet.subsquid.io/udp/22445/quic-v1".parse().unwrap(), FromStr::from_str("12D3KooW9tLMANc4Vnxp27Ypyq8m8mUv45nASahj3eSnMbGWSk1b").unwrap()),
+                    ("/dns4/mainnet.subsquid.io/udp/22446/quic-v1".parse().unwrap(), FromStr::from_str("12D3KooWEhPC7rsHAcifstVwJ3Cj55sWn7zXWuHrtAQUCGhGYnQz").unwrap()),
                 ]
             }
         }
@@ -458,7 +467,8 @@ impl Network {
             Network::Polkadot => Some("/dot/kad".to_string()),
             Network::Ipfs => None,
             Network::Ursa => Some("/ursa/kad/0.0.1".to_string()),
-            Network::Subsquid => None,
+            Network::SubsquidTethys => Some("/subsquid/dht/tethys/1.0.0".to_string()),
+            Network::SubsquidMainnet => Some("/subsquid/dht/mainnet/1.0.0".to_string()),
         }
     }
 }
